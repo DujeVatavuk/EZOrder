@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -170,6 +171,65 @@ public class SqlDatabaseController {
                     stmt.close();
                 }
             }
+        }
+    }
+
+    public class CreateOrder extends AsyncTask<String,String, String>
+    {
+        LoginActivity loginActivity;
+        Boolean isSuccess = false;
+
+        public CreateOrder(LoginActivity loginActivity) {
+            this.loginActivity = loginActivity;
+        }
+
+        @Override
+        protected String doInBackground(String... args)
+        {
+            try {
+                return updateDatabase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return "-1";
+        }
+
+        @Override
+        protected void onPostExecute(String Id)
+        {
+            if (isSuccess) {
+                Toast.makeText(this.loginActivity , "Order: " + String.valueOf(Id) , Toast.LENGTH_LONG).show();
+            }
+        }
+
+        private String updateDatabase()
+                throws SQLException {
+            int Id = -1;
+            int TableId = 1; // hardkodirano
+            try
+            {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+
+                String query = "INSERT INTO [dbo].[Orders] ([TableId]) VALUES (?)";
+                PreparedStatement ps = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, TableId);
+                ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
+                /*java.sql.RowId rowId_1 = rs.getRowId(1);*/
+                while (rs.next()) {
+                    // Get automatically generated key value
+                    Id = rs.getInt(1);
+                }
+                rs.close();
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+            return String.valueOf(Id);
         }
     }
 

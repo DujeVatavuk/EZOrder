@@ -33,8 +33,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(LoginActivity.this, UserActivity.class);
-                startActivity(intent);
+                SqlDatabaseController.CreateOrder CreateOrder = new SqlDatabaseController().new CreateOrder(LoginActivity.this);
+                CreateOrder.execute();
+
+/*                Intent intent = new Intent(LoginActivity.this, UserActivity.class);
+                startActivity(intent);*/
 
             }
         });
