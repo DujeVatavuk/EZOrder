@@ -17,10 +17,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class UserActivity extends AppCompatActivity {
@@ -28,8 +30,7 @@ public class UserActivity extends AppCompatActivity {
     private ExpandableListView  listView;
     private Button ButtonOrder;
     private ExpandableListAdapter listAdapter;
-    private List<String> listDataHeader;
-    private HashMap<String,List<String>> listHash;
+
     public int price=0;
 
     @Override
@@ -162,12 +163,33 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void InitData(
-            List<String> listDataHeader,
-            HashMap<String,List<String>> listHash
+            List<FoodCategory> FoodCategories,
+            List<FoodItem> FoodItems
     ) {
+        // convert to List<String>
+        List<String> listDataHeader = new ArrayList<String>();
+        HashMap<String,List<String>> listHash = new HashMap<String,List<String>>();
+
+        for (FoodCategory foodCategory : FoodCategories) {
+            listDataHeader.add(foodCategory.Name);
+        }
+
+        for (FoodCategory foodCategory : FoodCategories) {
+            ArrayList<String> foodItemsArray = new ArrayList<String>();
+
+            for (FoodItem foodItem: FoodItems) {
+                if (foodItem.FoodCategoryId == foodCategory.Id) {
+                    String priceFormated = NumberFormat.getCurrencyInstance(new Locale("en", "US"))
+                            .format(foodItem.Price);
+
+                    foodItemsArray.add(priceFormated + "     " + foodItem.Name);
+                }
+            }
+
+            listHash.put(foodCategory.Name,foodItemsArray);
+        }
+
         listAdapter = new ExpandableListAdapter(this,listDataHeader,listHash);
         listView.setAdapter(listAdapter);
     }
-
-
 }

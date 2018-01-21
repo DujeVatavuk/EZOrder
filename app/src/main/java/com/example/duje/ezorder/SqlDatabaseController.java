@@ -6,7 +6,6 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -95,12 +94,13 @@ public class SqlDatabaseController {
         }
     }
 
-    public class GetFoodCategory extends AsyncTask<String,Void,List<String>>
+    public class GetFoodCategory extends AsyncTask<String,Void,List<FoodCategory>>
     {
         UserActivity userActivity;
         Boolean isSuccess = false;
 
-        List<String> listDataHeader;
+        List<FoodCategory> foodCategories;
+        List<FoodItem> foodItems;
         HashMap<String,List<String>> listHash;
 
         public GetFoodCategory(UserActivity userActivity) {
@@ -108,26 +108,23 @@ public class SqlDatabaseController {
         }
 
         @Override
-        protected List<String> doInBackground(String... args)
+        protected List<FoodCategory> doInBackground(String... args)
         {
             try {
                 return readDatabase();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return new ArrayList<String>();
+            return new ArrayList<FoodCategory>();
         }
 
         @Override
-        protected void onPostExecute(List<String> r)
+        protected void onPostExecute(List<FoodCategory> r)
         {
-            listDataHeader = r;
-            listHash = new HashMap<>();
-
-/*            listDataHeader.add("Entrees");
-            listDataHeader.add("Pizza");
-            listDataHeader.add("Dessert");
-            listDataHeader.add("Drink");*/
+/*          foodCategories.add("Entrees");
+            foodCategories.add("Pizza");
+            foodCategories.add("Dessert");
+            foodCategories.add("Drink");
 
             List<String> entrees = new ArrayList<>();
             entrees.add("$5        The Ghostie Sandwich");
@@ -185,33 +182,49 @@ public class SqlDatabaseController {
             drink.add("$4        Latte");
             drink.add("$3        Ice Tea");
 
-            listHash.put(listDataHeader.get(0),entrees);
-            listHash.put(listDataHeader.get(1),pizza);
-            listHash.put(listDataHeader.get(2),dessert);
-            listHash.put(listDataHeader.get(3),drink);
-
-            userActivity.InitData(listDataHeader, listHash);
+            listHash.put(foodCategories.get(0).Name,entrees);
+            listHash.put(foodCategories.get(1).Name,pizza);
+            listHash.put(foodCategories.get(2).Name,dessert);
+            listHash.put(foodCategories.get(3).Name,drink);
+*/
+            userActivity.InitData(foodCategories, foodItems);
         }
 
 
-        private List<String> readDatabase()
+        private List<FoodCategory> readDatabase()
                 throws SQLException {
-            listDataHeader = new ArrayList<String>();
+            foodCategories = new ArrayList<FoodCategory>();
+            foodItems = new ArrayList<FoodItem>();
             Statement stmt = null;
             try
             {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
                 con = DriverManager.getConnection(db, un, pass);        // Connect to database
 
-                String query = "SELECT [Id], [Name] FROM [FoodCategory]";
+                String query = "SELECT [Id], [Name] FROM [FoodCategories]";
                 stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()) {
                     int Id = rs.getInt("Id");
                     String Name = rs.getString("Name");
+                    FoodCategory foodCategory = new  FoodCategory(Id, Name);
 
-                    listDataHeader.add(Name);
+                    foodCategories.add(foodCategory);
                 }
+
+                String queryItems = "SELECT [Id], [FoodCategoryId], [Name], [Price] FROM [dbo].[FoodItems]";
+                ResultSet rsItems = stmt.executeQuery(queryItems);
+                while (rsItems.next()) {
+                    FoodItem foodItem = new FoodItem();
+                    foodItem.Id = rsItems.getInt("Id");
+                    foodItem.FoodCategoryId = rsItems.getInt("FoodCategoryId");
+                    foodItem.Name = rsItems.getString("Name");
+                    foodItem.Price = rsItems.getFloat("Price");
+
+                    foodItems.add(foodItem);
+                }
+
+                isSuccess = true;
             }
             catch (Exception ex)
             {
@@ -222,7 +235,7 @@ public class SqlDatabaseController {
                 }
             }
 
-            return listDataHeader;
+            return foodCategories;
         }
     }
 
