@@ -141,9 +141,9 @@ public class SqlDatabaseController {
                 stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()) {
-                    int Id = rs.getInt("Id");
-                    String Name = rs.getString("Name");
-                    FoodCategory foodCategory = new  FoodCategory(Id, Name);
+                    FoodCategory foodCategory = new FoodCategory();
+                    foodCategory.Id = rs.getInt("Id");
+                    foodCategory.Name = rs.getString("Name");
 
                     foodCategories.add(foodCategory);
                 }

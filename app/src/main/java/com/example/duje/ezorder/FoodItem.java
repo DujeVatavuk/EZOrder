@@ -11,11 +11,4 @@ public class FoodItem {
     public float Price;
 
     public FoodItem() { }
-    public FoodItem(int Id, int FoodCategoryId, String Name, float Price) {
-        this.Id = Id;
-        this.FoodCategoryId = FoodCategoryId;
-        this.Name = Name;
-        this.Price = Price;
-    }
-
 }
