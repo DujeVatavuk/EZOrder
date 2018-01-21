@@ -94,7 +94,7 @@ public class SqlDatabaseController {
         }
     }
 
-    public class GetFoodCategory extends AsyncTask<String,Void,List<FoodCategory>>
+    public class GetFoodCategory extends AsyncTask<String,Void,Boolean>
     {
         UserActivity userActivity;
         Boolean isSuccess = false;
@@ -108,90 +108,26 @@ public class SqlDatabaseController {
         }
 
         @Override
-        protected List<FoodCategory> doInBackground(String... args)
+        protected Boolean doInBackground(String... args)
         {
             try {
-                return readDatabase();
+                readDatabase();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return new ArrayList<FoodCategory>();
+
+            return isSuccess;
         }
 
         @Override
-        protected void onPostExecute(List<FoodCategory> r)
+        protected void onPostExecute(Boolean isSuccess)
         {
-/*          foodCategories.add("Entrees");
-            foodCategories.add("Pizza");
-            foodCategories.add("Dessert");
-            foodCategories.add("Drink");
-
-            List<String> entrees = new ArrayList<>();
-            entrees.add("$5        The Ghostie Sandwich");
-            entrees.add("$7        Short Rib Ragu");
-            entrees.add("$3        Braised Onion Sauce");
-            entrees.add("$4        Creamy Mushroom Soup");
-            entrees.add("$10      Beef Bourguignon");
-            entrees.add("$4        Eggplant Parmesan");
-            entrees.add("$5        Chicken Kiev");
-            entrees.add("$5        Chicken Tamale Pie");
-            entrees.add("$4        Beans and Greens Soup");
-            entrees.add("$7        Rib Chili");
-            entrees.add("$8        \"Greek\" Lamb with Orzo");
-            entrees.add("$10      Linguine with Sardines, Fennel & Tomato");
-
-            List<String> pizza = new ArrayList<>();
-            pizza.add("$12      Balado Pizza");
-            pizza.add("$12      Satay Pizza");
-            pizza.add("$15      Tikka Chicken Pizza");
-            pizza.add("$10      Pizza Margherita");
-            pizza.add("$20      Pizza quattro stagioni");
-            pizza.add("$15      Pizza Alla Napoletana (Napoli)");
-            pizza.add("$13      Liguria Pizza");
-            pizza.add("$15      Pizza Marinara");
-            pizza.add("$17      Pizza Ai Quattro Formagi");
-            pizza.add("$13      Pomodoro Pachina and Rughetta");
-            pizza.add("$15      Pizza Romana");
-            pizza.add("$25      Hawaiian Pizza (pineapple)");
-
-            List<String> dessert = new ArrayList<>();
-            dessert.add("$999 999 Million Dollar Pound Cake (doesn't cost million dollars)");
-            dessert.add("$7        All-Time Favorite Chocolate Chip Cookies");
-            dessert.add("$8        Classic Chess Pie");
-            dessert.add("$8        Best Carrot Cake");
-            dessert.add("$10      Pecan-Peach Cobbler");
-            dessert.add("$7        Mom's Pecan Pie");
-            dessert.add("$5        Summertime Peach Ice Cream");
-            dessert.add("$7        Heavenly Key Lime Pie");
-            dessert.add("$15      Chocolate-Red Velvet Layer Cake");
-            dessert.add("$7        Classic Strawberry Shortcake");
-            dessert.add("$10      Mississippi Mud Brownies (doesn't contain mud)");
-            dessert.add("$15      Chocolate-Peanut Butter Mousse Cake");
-
-            List<String> drink = new ArrayList<>();
-            drink.add("$3        Coca-Cola");
-            drink.add("$3        Sprite");
-            drink.add("$3        Fanta");
-            drink.add("$7        7-UP");
-            drink.add("$2        Mineral water");
-            drink.add("$3        Black tea");
-            drink.add("$3        Mint tea");
-            drink.add("$3        Green tea");
-            drink.add("$4        Espresso");
-            drink.add("$4        Americano");
-            drink.add("$4        Latte");
-            drink.add("$3        Ice Tea");
-
-            listHash.put(foodCategories.get(0).Name,entrees);
-            listHash.put(foodCategories.get(1).Name,pizza);
-            listHash.put(foodCategories.get(2).Name,dessert);
-            listHash.put(foodCategories.get(3).Name,drink);
-*/
-            userActivity.InitData(foodCategories, foodItems);
+            if (isSuccess) {
+                userActivity.InitData(foodCategories, foodItems);
+            }
         }
 
-
-        private List<FoodCategory> readDatabase()
+        private void readDatabase()
                 throws SQLException {
             foodCategories = new ArrayList<FoodCategory>();
             foodItems = new ArrayList<FoodItem>();
@@ -234,8 +170,6 @@ public class SqlDatabaseController {
                     stmt.close();
                 }
             }
-
-            return foodCategories;
         }
     }
 
