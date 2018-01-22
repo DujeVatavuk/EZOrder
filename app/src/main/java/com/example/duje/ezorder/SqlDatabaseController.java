@@ -32,6 +32,8 @@ public class SqlDatabaseController {
     String z = "";
     Boolean isSuccess = false;
 
+    Order order;
+
     public class CheckLogin extends AsyncTask<String,String,String>
     {
         Context someContext;
@@ -176,11 +178,13 @@ public class SqlDatabaseController {
 
     public class CreateOrder extends AsyncTask<String,String, String>
     {
+
         LoginActivity loginActivity;
         Boolean isSuccess = false;
 
         public CreateOrder(LoginActivity loginActivity) {
             this.loginActivity = loginActivity;
+            order = Order.getInstance();
         }
 
         @Override
@@ -220,7 +224,7 @@ public class SqlDatabaseController {
                 /*java.sql.RowId rowId_1 = rs.getRowId(1);*/
                 while (rs.next()) {
                     // Get automatically generated key value
-                    Id = rs.getInt(1);
+                    Order.getInstance().Id = rs.getInt(1);
                 }
                 rs.close();
                 isSuccess = true;
