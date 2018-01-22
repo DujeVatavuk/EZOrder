@@ -65,6 +65,10 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 final FoodItem selected = (FoodItem) listAdapter.getChild(i, i1);
+
+                SqlDatabaseController.CreateOrderItem createOrderItem = new SqlDatabaseController().new CreateOrderItem(UserActivity.this, selected.Id);
+                createOrderItem.execute();
+
                 Toast.makeText(getApplicationContext(), selected.Name /*pise string onog kojeg sam kliknija*/, Toast.LENGTH_SHORT).show();
                 //ideja je da upsiem u file sve childove koje sam pritisa i onda ih procitam u iducem activityu
 /*                try {

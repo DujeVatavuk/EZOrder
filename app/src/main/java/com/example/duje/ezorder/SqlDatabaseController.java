@@ -237,6 +237,68 @@ public class SqlDatabaseController {
         }
     }
 
+    public class CreateOrderItem extends AsyncTask<String,String, String>
+    {
+
+        UserActivity userActivity;
+        Boolean isSuccess = false;
+        int FoodItemId = -1;
+
+        public CreateOrderItem(UserActivity userActivity, int FoodItemId) {
+            this.userActivity = userActivity;
+            this.FoodItemId = FoodItemId;
+        }
+
+        @Override
+        protected String doInBackground(String... args)
+        {
+            try {
+                return updateDatabase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return "-1";
+        }
+
+        @Override
+        protected void onPostExecute(String Id)
+        {
+            if (isSuccess) {
+                Toast.makeText(this.userActivity , "OrderItem: " + String.valueOf(Id) , Toast.LENGTH_LONG).show();
+            }
+        }
+
+        private String updateDatabase()
+                throws SQLException {
+            int Id = -1;
+            try
+            {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+
+                String query = "INSERT INTO [dbo].[OrderItems] ([OrderId],[FoodItemId],[Quantity]) VALUES (?,?,1)";
+                PreparedStatement ps = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, Order.getInstance().Id);
+                ps.setInt(2, this.FoodItemId);
+                ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
+                /*java.sql.RowId rowId_1 = rs.getRowId(1);*/
+                while (rs.next()) {
+                    // Get automatically generated key value
+                    Id = rs.getInt(1);
+                }
+                rs.close();
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+            return String.valueOf(Id);
+        }
+    }
+
     public Connection connectionclass(String user, String password, String database, String server)
     {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
