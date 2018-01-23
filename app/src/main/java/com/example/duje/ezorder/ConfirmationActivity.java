@@ -93,7 +93,12 @@ public class ConfirmationActivity extends AppCompatActivity {
         TextViewPrice.setText("Total price is: $" + String.valueOf(viewOrder.TotalPrice));
 
         for (ViewOrderItem viewOrderItem : viewOrderItems){
-            allText += viewOrderItem.Name + "  " + String.valueOf(viewOrderItem.Price) + "  " + String.valueOf(viewOrderItem.Quantity) + "  " + String.valueOf(viewOrderItem.TotalPrice) + "\n";
+            if (viewOrderItem.Quantity==1){
+                allText += viewOrderItem.Name + "\t\t$" + String.valueOf(viewOrderItem.Price) + "\n";
+            }
+            else{
+                allText += viewOrderItem.Name + "\t\t$" + String.valueOf(viewOrderItem.Price) + "\t\tx" + String.valueOf(viewOrderItem.Quantity) + "\t\t$" + String.valueOf(viewOrderItem.TotalPrice) + "\n";
+            }
         }
         TextViewOrder.setText(allText.trim().substring(4));//iz nekog razloga prva pise null ispred imena prvog jela
     }

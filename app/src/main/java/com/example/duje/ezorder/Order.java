@@ -22,5 +22,6 @@ public class Order {
     public String Remark;
     public Date Ordered;
     public float TotalPrice;
+    public  boolean Processed;
     public List<ViewOrderItem> ViewOrderItemList;
 }

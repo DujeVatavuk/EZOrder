@@ -13,6 +13,7 @@ public class ViewOrder{
     public String Remark;
     public Date Ordered;
     public float TotalPrice;
+    public  boolean Processed;
     public List<ViewOrderItem> ViewOrderItemList;
 
     public ViewOrder() {}
