@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,12 +29,12 @@ public class ModeratorActivity extends AppCompatActivity {
 
         //ode dinamicki trebam stavit checkboxove za svaki item sa narudzbe
 
-        linearMain =findViewById(R.id.linearMain);
+        linearMain = findViewById(R.id.linearMain);
         /**
          * create linked hash map for store item you can get value from database
          * or server also
          */
-        File file=new File(getFilesDir(),"todofile.txt");
+        /*File file=new File(getFilesDir(),"todofile.txt");
         String completeText="";//sad ovo je jedan string u vise redova, sad njega treba prebacit u linked hash map
         try{
             FileReader reader=new FileReader(file);
@@ -53,7 +54,7 @@ public class ModeratorActivity extends AppCompatActivity {
         for (String eachSplit : splitData) {
             j++;
             alphabet.put(Integer.toString(j), eachSplit);
-        }
+        }*/
         /*LinkedHashMap<String, String> alphabet = new LinkedHashMap<String, String>();//mozda ne mora bas bit hash map
         alphabet.put("1", "Apple");
         alphabet.put("2", "Boy");
@@ -65,8 +66,12 @@ public class ModeratorActivity extends AppCompatActivity {
         alphabet.put("8", "Hen");
         alphabet.put("9", "I am");
         alphabet.put("10", "Jug");*/
-
-        Set<?> set = alphabet.entrySet();
+        LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
+        OrderItemList.put("1", "Apple");
+        OrderItemList.put("2", "Boy");
+        OrderItemList.put("3", "Cat");
+        OrderItemList.put("4", "Dog");
+        Set<?> set = OrderItemList.entrySet();
         // Get an iterator
         Iterator<?> i = set.iterator();
         // Display elements
@@ -81,7 +86,6 @@ public class ModeratorActivity extends AppCompatActivity {
             checkBox.setText(me.getValue().toString());
             checkBox.setOnClickListener(getOnClickDoSomething(checkBox));
             linearMain.addView(checkBox);
-
         }
 
     }
@@ -93,5 +97,13 @@ public class ModeratorActivity extends AppCompatActivity {
                 System.out.println("and text***" + button.getText().toString());
             }
         };
+    }
+
+    void fillLinkedHashMap(List<ViewOrderItem> viewOrderItems, LinkedHashMap<String, String> OrderItemList){
+        int i=1;
+        for (ViewOrderItem viewOrderItem : viewOrderItems){
+            OrderItemList.put(String.valueOf(i), viewOrderItem.Name);
+            i++;
+        }
     }
 }

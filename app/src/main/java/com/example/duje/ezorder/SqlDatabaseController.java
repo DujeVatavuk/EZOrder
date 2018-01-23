@@ -321,6 +321,7 @@ public class SqlDatabaseController {
     public class GetOrder extends AsyncTask<String,Void,Boolean>
     {
         ConfirmationActivity confirmationActivity;
+        //ModeratorActivity moderatorActivity;
         Boolean isSuccess = false;
 
         ViewOrder viewOrder;
@@ -329,6 +330,10 @@ public class SqlDatabaseController {
         public GetOrder(ConfirmationActivity confirmationActivity) {
             this.confirmationActivity = confirmationActivity;
         }
+
+        /*public GetOrder(ModeratorActivity moderatorActivity) {
+            this.moderatorActivity = moderatorActivity;
+        }*/
 
         @Override
         protected Boolean doInBackground(String... args)
