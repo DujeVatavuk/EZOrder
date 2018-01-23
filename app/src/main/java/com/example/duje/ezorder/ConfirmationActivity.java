@@ -20,6 +20,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     private Button ButtonConfirm;
     private Button ButtonDecline;
     private TextView TextViewPrice;
+    public String allText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,5 +91,10 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     public void WritePrice(ViewOrder viewOrder, List<ViewOrderItem> viewOrderItems){//cijena)
         TextViewPrice.setText("Total price is: $" + String.valueOf(viewOrder.TotalPrice));
+
+        for (ViewOrderItem viewOrderItem : viewOrderItems){
+            allText += viewOrderItem.Name + "  " + String.valueOf(viewOrderItem.Price) + "  " + String.valueOf(viewOrderItem.Quantity) + "  " + String.valueOf(viewOrderItem.TotalPrice) + "\n";
+        }
+        TextViewOrder.setText(allText.trim().substring(4));//iz nekog razloga prva pise null ispred imena prvog jela
     }
 }

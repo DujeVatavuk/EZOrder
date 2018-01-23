@@ -13,7 +13,7 @@
         android:layout_height="283dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="36sp" />
 
     <TextView
