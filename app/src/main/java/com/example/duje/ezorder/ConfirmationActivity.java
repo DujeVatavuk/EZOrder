@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.List;
 
 public class ConfirmationActivity extends AppCompatActivity {
 
@@ -30,7 +31,12 @@ public class ConfirmationActivity extends AppCompatActivity {
         ButtonDecline=findViewById(R.id.ButtonDecline);
         TextViewPrice=findViewById(R.id.TextViewPrice);
 
-        File file=new File(getFilesDir(),"todofile.txt");
+        //ode ce se izvrsit SQL klasa
+
+        SqlDatabaseController.GetOrder getOrder = new SqlDatabaseController().new GetOrder(ConfirmationActivity.this);
+        getOrder.execute();
+
+        /*File file=new File(getFilesDir(),"todofile.txt");
         String completeText="";
         try{
             FileReader reader=new FileReader(file);
@@ -42,15 +48,20 @@ public class ConfirmationActivity extends AppCompatActivity {
             }
         }catch (Exception e){
             e.printStackTrace();
-        }
-        Intent pintent=getIntent();
-        int Price = pintent.getIntExtra("PRICE", 0);
-        TextViewPrice.setText("Total price is: $"+Price);
+        }*/
+        /*Intent pintent = getIntent();
+        int Price = pintent.getIntExtra("PRICE", 0);*/
+        //TextViewPrice.setText("Total price is: $0");// + Price);//ode e doc onaj price iz baze, ne ovo moje
+        //ode treba dodat da ispisuje cila narudzba (Order items)
+        //TextViewOrder.setText(completeText);//treba dodat da se kroz njega moze scrollat
 
         ButtonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(ConfirmationActivity.this, ModeratorActivity.class);
+                /*Intent intent1 = new Intent(ConfirmationActivity.this, ModeratorActivity.class);
+                startActivity(intent1);*/
+                //Ode necemo slat u moderator nego u login ponovo tako da se mora logirati da bi se doslo do moderatora
+                Intent intent1 = new Intent(ConfirmationActivity.this, LoginActivity.class);
                 startActivity(intent1);
             }
         });
@@ -58,8 +69,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         ButtonDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent2 = new Intent(ConfirmationActivity.this, UserActivity.class);
-                try{
+                /*try{
                     File file = new File(getFilesDir(), "todofile.txt");
                     FileWriter writer = new FileWriter(file);
                     writer.append("");//izbrise sve sta je bilo u fileu
@@ -67,12 +77,18 @@ public class ConfirmationActivity extends AppCompatActivity {
                     writer.close();
                 }catch (Exception e){
                     e.printStackTrace();
-                }
+                }*/
+                //ode treba iz baze pomogucnosti izbrisati trenutni order i napraviti novi order
+                SqlDatabaseController.CreateOrder CreateOrder = new SqlDatabaseController().new CreateOrder(ConfirmationActivity.this);
+                CreateOrder.execute();
+
+                Intent intent2 = new Intent(ConfirmationActivity.this, UserActivity.class);
                 startActivity(intent2);
             }
         });
+    }
 
-        TextViewOrder.setText(completeText);
-
+    public void WritePrice(ViewOrder viewOrder, List<ViewOrderItem> viewOrderItems){//cijena)
+        TextViewPrice.setText("Total price is: $" + String.valueOf(viewOrder.TotalPrice));
     }
 }

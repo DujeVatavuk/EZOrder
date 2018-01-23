@@ -51,11 +51,12 @@ public class UserActivity extends AppCompatActivity {
                 /*File file = new File(getFilesDir(), "todofile.txt");*/
 
                 if (price == 0) {
-                    Toast.makeText(getApplicationContext(), "Morate bar nesto odabrati prije provjere narudzbe", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "You have to choose somethng before ordering", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    //Toast.makeText(getApplicationContext(), String.valueOf(price), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(UserActivity.this, ConfirmationActivity.class);
-                    intent.putExtra("PRICE", price);
+                    //intent.putExtra("PRICE", price);//u ConfirmActivityu ce bit price iz baze
                     startActivity(intent);
                 }
             }

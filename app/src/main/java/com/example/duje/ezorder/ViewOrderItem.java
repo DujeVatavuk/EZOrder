@@ -4,9 +4,13 @@ package com.example.duje.ezorder;
  * Created by duje on 21.1.2018..
  */
 
-public class OrderItem {
-    public int Id;
+public class ViewOrderItem {
     public int OrderId;
-    public int FoodId;
+    public int FoodItemId;
+    public String Name;
+    public float Price;
     public int Quantity;
+    public float TotalPrice;
+
+    public ViewOrderItem(){}
 }

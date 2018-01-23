@@ -176,14 +176,21 @@ public class SqlDatabaseController {
         }
     }
 
-    public class CreateOrder extends AsyncTask<String,String, String>
+    public class CreateOrder extends AsyncTask<String,String,String>
     {
 
         LoginActivity loginActivity;
+        ConfirmationActivity confirmationActivity;
         Boolean isSuccess = false;
 
         public CreateOrder(LoginActivity loginActivity) {
             this.loginActivity = loginActivity;
+            order = Order.getInstance();
+        }
+
+        //@Override
+        public CreateOrder(ConfirmationActivity confirmationActivity) {
+            this.confirmationActivity = confirmationActivity;
             order = Order.getInstance();
         }
 
@@ -202,8 +209,19 @@ public class SqlDatabaseController {
         @Override
         protected void onPostExecute(String Id)
         {
-            if (isSuccess) {
-                Toast.makeText(this.loginActivity , "Order: " + String.valueOf(Id) , Toast.LENGTH_LONG).show();
+            try {
+                if (isSuccess) {
+                    Toast.makeText(this.loginActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                Log.e("fail login", e.getMessage());
+            }
+            try {
+                if (isSuccess) {
+                    Toast.makeText(this.confirmationActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                Log.e("fail confirmation", e.getMessage());
             }
         }
 
@@ -225,6 +243,7 @@ public class SqlDatabaseController {
                 while (rs.next()) {
                     // Get automatically generated key value
                     Order.getInstance().Id = rs.getInt(1);
+
                 }
                 rs.close();
                 isSuccess = true;
@@ -296,6 +315,84 @@ public class SqlDatabaseController {
                 isSuccess = false;
             }
             return String.valueOf(Id);
+        }
+    }
+
+    public class GetOrder extends AsyncTask<String,Void,Boolean>
+    {
+        ConfirmationActivity confirmationActivity;
+        Boolean isSuccess = false;
+
+        ViewOrder viewOrder;
+        List<ViewOrderItem> viewOrderItems;
+
+        public GetOrder(ConfirmationActivity confirmationActivity) {
+            this.confirmationActivity = confirmationActivity;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args)
+        {
+            try {
+                readDatabase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return isSuccess;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSuccess)
+        {
+            if (isSuccess) {//odi pisem funkciju koja se izvrsava u confitmation activityu
+                //userActivity.InitData(foodCategories, foodItems);
+                confirmationActivity.WritePrice(viewOrder, viewOrderItems);//ode dolazi cijena
+            }
+        }
+
+        private void readDatabase()
+                throws SQLException {
+
+            viewOrderItems = new ArrayList<ViewOrderItem>();
+
+            try
+            {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+
+                String queryPrice = "SELECT TOP 1 [OrderTotalPrice] FROM [dbo].[ViewOrders] WHERE Id=(?)";
+                PreparedStatement ps = con.prepareStatement(queryPrice);
+                ps.setInt(1, Order.getInstance().Id);//valjda
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    viewOrder = new ViewOrder();
+                    viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
+                }
+
+                String queryOrder = "SELECT [OrderId], [FoodItemId], [Name], [Price], [Quantity], [TotalPrice] FROM [dbo].[ViewOrderItems] WHERE [OrderId]=(?)";
+                PreparedStatement ps1 = con.prepareStatement(queryOrder);
+                ps1.setInt(1, Order.getInstance().Id);//valjda
+                ResultSet rs1 = ps1.executeQuery();
+                while (rs1.next()) {
+                    ViewOrderItem viewOrderItem = new ViewOrderItem();
+
+                    viewOrderItem.OrderId=rs1.getInt("OrderId");
+                    viewOrderItem.FoodItemId=rs1.getInt("FoodItemId");
+                    viewOrderItem.Name=rs1.getString("Name");
+                    viewOrderItem.Price=rs1.getFloat("Price");
+                    viewOrderItem.Quantity=rs1.getInt("Quantity");
+                    viewOrderItem.TotalPrice=rs1.getFloat("TotalPrice");
+
+                    viewOrderItems.add(viewOrderItem);
+                }
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
         }
     }
 

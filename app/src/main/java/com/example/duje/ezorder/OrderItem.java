@@ -8,5 +8,6 @@ public class OrderItem {
     public int Id;
     public int OrderId;
     public int FoodId;
-    public int Quantity;
+
+    public OrderItem(){}
 }
