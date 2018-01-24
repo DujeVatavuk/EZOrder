@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -21,6 +22,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
     LinearLayout linearMain;
     CheckBox checkBox;
+    TextView TextViewTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,10 @@ public class ModeratorActivity extends AppCompatActivity {
         //ode dinamicki trebam stavit checkboxove za svaki item sa narudzbe
 
         linearMain = findViewById(R.id.linearMain);
+        TextViewTest=findViewById(R.id.TextViewTest);
+
+        SqlDatabaseController.ModerateOrder moderateOrder = new SqlDatabaseController().new ModerateOrder(ModeratorActivity.this);
+        moderateOrder.execute();
         /**
          * create linked hash map for store item you can get value from database
          * or server also
@@ -66,7 +72,7 @@ public class ModeratorActivity extends AppCompatActivity {
         alphabet.put("8", "Hen");
         alphabet.put("9", "I am");
         alphabet.put("10", "Jug");*/
-        LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
+        /*LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
         OrderItemList.put("1", "Apple");
         OrderItemList.put("2", "Boy");
         OrderItemList.put("3", "Cat");
@@ -86,7 +92,7 @@ public class ModeratorActivity extends AppCompatActivity {
             checkBox.setText(me.getValue().toString());
             checkBox.setOnClickListener(getOnClickDoSomething(checkBox));
             linearMain.addView(checkBox);
-        }
+        }*/
 
     }
 
@@ -104,6 +110,12 @@ public class ModeratorActivity extends AppCompatActivity {
         for (ViewOrderItem viewOrderItem : viewOrderItems){
             OrderItemList.put(String.valueOf(i), viewOrderItem.Name);
             i++;
+        }
+    }
+
+    void MetodaZaTestiranje(List<ViewOrder> viewOrders){
+        for (ViewOrder viewOrder : viewOrders){
+            TextViewTest.setText(String.valueOf(viewOrder.Id) + "  " + String.valueOf(viewOrder.TableId) + "  " + String.valueOf(viewOrder.Ordered) + "  " + String.valueOf(viewOrder.Remark) + "  " + String.valueOf(viewOrder.Processed));
         }
     }
 }
