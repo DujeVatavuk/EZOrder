@@ -553,6 +553,7 @@ public class SqlDatabaseController {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     viewOrder = new ViewOrder();
+                    
                     viewOrder.Id=rs.getInt("Id");
                     viewOrder.TableId=rs.getInt("TableId");
                     viewOrder.Remark=rs.getString("Remark");

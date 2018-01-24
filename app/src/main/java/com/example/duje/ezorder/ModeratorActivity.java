@@ -23,6 +23,7 @@ public class ModeratorActivity extends AppCompatActivity {
     LinearLayout linearMain;
     CheckBox checkBox;
     TextView TextViewTest;
+    Button buttonFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
         linearMain = findViewById(R.id.linearMain);
         TextViewTest=findViewById(R.id.TextViewTest);
+        buttonFinish=findViewById(R.id.buttonFinish);
         LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
         SqlDatabaseController.ModerateOrder moderateOrder = new SqlDatabaseController().new ModerateOrder(ModeratorActivity.this, OrderItemList);
         moderateOrder.execute();
@@ -104,14 +106,16 @@ public class ModeratorActivity extends AppCompatActivity {
     }
 
     void fillLinkedHashMap(List<ViewOrderItem> viewOrderItems, LinkedHashMap<String, String> OrderItemList){
-        int j=1;
+        int k=1;
+        boolean isAllChecked=true;
         for (ViewOrderItem viewOrderItem : viewOrderItems){
-            OrderItemList.put(String.valueOf(j), viewOrderItem.Name);
-            j++;
+            OrderItemList.put(String.valueOf(k), viewOrderItem.Name);
+            k++;
         }
         Set<?> set = OrderItemList.entrySet();
         // Get an iterator
         Iterator<?> i = set.iterator();
+
         // Display elements
         while (i.hasNext()) {
             @SuppressWarnings("rawtypes")
