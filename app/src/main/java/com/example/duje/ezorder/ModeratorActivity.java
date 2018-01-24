@@ -33,8 +33,8 @@ public class ModeratorActivity extends AppCompatActivity {
 
         linearMain = findViewById(R.id.linearMain);
         TextViewTest=findViewById(R.id.TextViewTest);
-
-        SqlDatabaseController.ModerateOrder moderateOrder = new SqlDatabaseController().new ModerateOrder(ModeratorActivity.this);
+        LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
+        SqlDatabaseController.ModerateOrder moderateOrder = new SqlDatabaseController().new ModerateOrder(ModeratorActivity.this, OrderItemList);
         moderateOrder.execute();
         /**
          * create linked hash map for store item you can get value from database
@@ -72,12 +72,10 @@ public class ModeratorActivity extends AppCompatActivity {
         alphabet.put("8", "Hen");
         alphabet.put("9", "I am");
         alphabet.put("10", "Jug");*/
-        /*LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
-        OrderItemList.put("1", "Apple");
-        OrderItemList.put("2", "Boy");
-        OrderItemList.put("3", "Cat");
-        OrderItemList.put("4", "Dog");
-        Set<?> set = OrderItemList.entrySet();
+        /*OrderItemList.put("8", "Hen");
+        OrderItemList.put("9", "I am");
+        OrderItemList.put("10", "Jug");*/
+        /*Set<?> set = OrderItemList.entrySet();
         // Get an iterator
         Iterator<?> i = set.iterator();
         // Display elements
@@ -106,16 +104,32 @@ public class ModeratorActivity extends AppCompatActivity {
     }
 
     void fillLinkedHashMap(List<ViewOrderItem> viewOrderItems, LinkedHashMap<String, String> OrderItemList){
-        int i=1;
+        int j=1;
         for (ViewOrderItem viewOrderItem : viewOrderItems){
-            OrderItemList.put(String.valueOf(i), viewOrderItem.Name);
-            i++;
+            OrderItemList.put(String.valueOf(j), viewOrderItem.Name);
+            j++;
+        }
+        Set<?> set = OrderItemList.entrySet();
+        // Get an iterator
+        Iterator<?> i = set.iterator();
+        // Display elements
+        while (i.hasNext()) {
+            @SuppressWarnings("rawtypes")
+            Map.Entry me = (Map.Entry) i.next();
+            System.out.print(me.getKey() + ": ");
+            System.out.println(me.getValue());
+
+            checkBox = new CheckBox(this);
+            checkBox.setId(Integer.parseInt(me.getKey().toString()));
+            checkBox.setText(me.getValue().toString());
+            checkBox.setOnClickListener(getOnClickDoSomething(checkBox));
+            linearMain.addView(checkBox);
         }
     }
 
     void MetodaZaTestiranje(List<ViewOrder> viewOrders){
         for (ViewOrder viewOrder : viewOrders){
-            TextViewTest.setText(String.valueOf(viewOrder.Id) + "  " + String.valueOf(viewOrder.TableId) + "  " + String.valueOf(viewOrder.Ordered) + "  " + String.valueOf(viewOrder.Remark) + "  " + String.valueOf(viewOrder.Processed));
+            TextViewTest.setText(String.valueOf(viewOrder.Id) + "  " + String.valueOf(viewOrder.TableId) + "  " + String.valueOf(viewOrder.TotalPrice) + "  " + String.valueOf(viewOrder.Ordered) + "  " + String.valueOf(viewOrder.Remark) + "  " + String.valueOf(viewOrder.Processed));
         }
     }
 }

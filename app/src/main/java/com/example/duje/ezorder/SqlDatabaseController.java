@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -473,15 +474,20 @@ public class SqlDatabaseController {
     public class ModerateOrder extends AsyncTask<String,Void,Boolean>
     {
         ModeratorActivity moderatorActivity;
+        LinkedHashMap<String, String> OrderItemList;
         Boolean isSuccess = false;
 
         ViewOrder viewOrder;
         List<ViewOrder> viewOrders;
 
+        ViewOrderItem viewOrderItem;
+        List<ViewOrderItem> viewOrderItems;
 
 
-        public ModerateOrder(ModeratorActivity moderatorActivity) {
+
+        public ModerateOrder(ModeratorActivity moderatorActivity, LinkedHashMap<String, String> orderItemList) {
             this.moderatorActivity = moderatorActivity;
+            this.OrderItemList=orderItemList;
         }
 
         @Override
@@ -502,13 +508,15 @@ public class SqlDatabaseController {
             if (isSuccess) {//odi pisem funkciju koja se izvrsava u confitmation activityu
                 //fillhashmap
                 moderatorActivity.MetodaZaTestiranje(viewOrders);
+                moderatorActivity.fillLinkedHashMap(viewOrderItems, OrderItemList);
             }
         }
 
         private void readDatabase()
                 throws SQLException {
 
-            viewOrders = new ArrayList<ViewOrder>();
+            viewOrders = new ArrayList<>();
+            viewOrderItems = new ArrayList<>();
 
             try
             {
@@ -539,7 +547,7 @@ public class SqlDatabaseController {
                     viewOrderItem.TotalPrice=rs1.getFloat("TotalPrice");
 
                     viewOrderItems.add(viewOrderItem);*/
-                String queryPrice = "SELECT TOP 1 [Id] ,[TableId] ,[Remark] ,[Ordered] ,[Processed] FROM [dbo].[Orders] WHERE Id=(?)";
+                String queryPrice = "SELECT TOP 1 [Id] ,[TableId] ,[Remark] ,[Ordered] ,[Processed], [OrderTotalPrice] FROM [dbo].[ViewOrders] WHERE Id=(?)";
                 PreparedStatement ps = con.prepareStatement(queryPrice);
                 ps.setInt(1, Order.getInstance().Id);//valjda
                 ResultSet rs = ps.executeQuery();
@@ -550,8 +558,26 @@ public class SqlDatabaseController {
                     viewOrder.Remark=rs.getString("Remark");
                     viewOrder.Ordered=rs.getDate("Ordered");//pazit na format
                     viewOrder.Processed=rs.getBoolean("Processed");
+                    viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
 
                     viewOrders.add(viewOrder);
+                }
+
+                String queryOrder = "SELECT [OrderId], [FoodItemId], [Name], [Price], [Quantity], [TotalPrice] FROM [dbo].[ViewOrderItems] WHERE [OrderId]=(?)";
+                PreparedStatement ps1 = con.prepareStatement(queryOrder);
+                ps1.setInt(1, Order.getInstance().Id);//valjda
+                ResultSet rs1 = ps1.executeQuery();
+                while (rs1.next()) {
+                    viewOrderItem = new ViewOrderItem();
+
+                    viewOrderItem.OrderId = rs1.getInt("OrderId");
+                    viewOrderItem.FoodItemId = rs1.getInt("FoodItemId");
+                    viewOrderItem.Name = rs1.getString("Name");
+                    viewOrderItem.Price = rs1.getFloat("Price");
+                    viewOrderItem.Quantity = rs1.getInt("Quantity");
+                    viewOrderItem.TotalPrice = rs1.getFloat("TotalPrice");
+
+                    viewOrderItems.add(viewOrderItem);
                 }
 
                 isSuccess = true;
