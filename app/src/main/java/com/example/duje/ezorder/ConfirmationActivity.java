@@ -62,6 +62,9 @@ public class ConfirmationActivity extends AppCompatActivity {
                 /*Intent intent1 = new Intent(ConfirmationActivity.this, ModeratorActivity.class);
                 startActivity(intent1);*/
                 //Ode necemo slat u moderator nego u login ponovo tako da se mora logirati da bi se doslo do moderatora
+                SqlDatabaseController.ConfirmOrder cfo = new SqlDatabaseController().new ConfirmOrder(ConfirmationActivity.this);
+                cfo.execute();
+
                 Intent intent1 = new Intent(ConfirmationActivity.this, LoginActivity.class);
                 startActivity(intent1);
             }

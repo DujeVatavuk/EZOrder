@@ -401,6 +401,72 @@ public class SqlDatabaseController {
         }
     }
 
+    public class ConfirmOrder extends AsyncTask<String,String,String>
+    {
+
+        ConfirmationActivity confirmationActivity;
+        Boolean isSuccess = false;
+
+
+        public ConfirmOrder(ConfirmationActivity confirmationActivity) {
+            this.confirmationActivity = confirmationActivity;
+            order = Order.getInstance();
+        }
+
+        @Override
+        protected String doInBackground(String... args)
+        {
+            try {
+                return updateDatabase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return "-1";
+        }
+
+        @Override
+        protected void onPostExecute(String Id)
+        {
+            /*if (isSuccess) {
+                Toast.makeText(this.confirmationActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
+            }*/
+        }
+
+        private String updateDatabase()
+                throws SQLException {
+            int Id = -1;
+            //int TableId = 1; // hardkodirano
+            try
+            {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+                /*
+                String queryPrice = "SELECT TOP 1 [OrderTotalPrice] FROM [dbo].[ViewOrders] WHERE Id=(?)";
+                PreparedStatement ps = con.prepareStatement(queryPrice);
+                ps.setInt(1, Order.getInstance().Id);//valjda
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    viewOrder = new ViewOrder();
+                    viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
+                }
+                 */
+                String queryOrdered = "UPDATE [dbo].[Orders] SET [Ordered] = getdate() WHERE [Id]=?";
+                PreparedStatement ps = con.prepareStatement(queryOrdered);
+                ps.setInt(1, Order.getInstance().Id);
+                //trebat ce jos jedan prepard statement
+                ps.executeUpdate();
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+            return String.valueOf(Id);
+        }
+    }
+
     public Connection connectionclass(String user, String password, String database, String server)
     {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
