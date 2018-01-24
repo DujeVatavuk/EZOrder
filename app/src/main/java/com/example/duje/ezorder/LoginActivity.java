@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                 SqlDatabaseController.CheckLogin checkLogin = new SqlDatabaseController().new CheckLogin(LoginActivity.this);
                 checkLogin.execute("usr","pwd");
                 */
-
+                //PROMIJENI U LOGIN
                 if (AutoCompleteTextViewUsername.getText().toString().equals("Admin") && EditTextPassword.getText().toString().equals("1234")){
                     Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                     startActivity(intent);

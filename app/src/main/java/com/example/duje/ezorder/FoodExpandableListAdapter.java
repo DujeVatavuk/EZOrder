@@ -22,9 +22,7 @@ public class FoodExpandableListAdapter extends BaseExpandableListAdapter {
 
     public FoodExpandableListAdapter(Context context, List<FoodCategory> FoodCategories, List<FoodItem> FoodItems) {
         this.context = context;
-
         this.listDataHeader = FoodCategories;
-
         this.listHashMap = new HashMap<FoodCategory,List<FoodItem>>();
 
         /*

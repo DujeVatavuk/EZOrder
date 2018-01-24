@@ -177,6 +177,122 @@ public class SqlDatabaseController {
         }
     }
 
+    public class GetInfoForAdmin extends AsyncTask<String,Void,Boolean>
+    {
+        AdminActivity adminActivity;
+        Boolean isSuccess = false;
+
+        /*List<FoodCategory> foodCategories;
+        List<FoodItem> foodItems;
+        HashMap<String,List<String>> listHash;*/
+        List<ViewOrder> viewOrders;
+        List<ViewOrderItem> viewOrderItems;
+        HashMap<String,List<String>> listAdminHash;
+
+        public GetInfoForAdmin(AdminActivity adminActivity) {
+            this.adminActivity = adminActivity;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args)
+        {
+            try {
+                readDatabase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return isSuccess;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSuccess)
+        {
+            if (isSuccess) {
+                adminActivity.CollectData(viewOrders, viewOrderItems);
+            }
+        }
+
+        private void readDatabase()
+                throws SQLException {
+            /*foodCategories = new ArrayList<FoodCategory>();
+            foodItems = new ArrayList<FoodItem>();*/
+            viewOrders=new ArrayList<>();
+            viewOrderItems=new ArrayList<>();
+            Statement stmt = null;
+            try
+            {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+
+                /*String query = "SELECT [Id], [Name] FROM [FoodCategories]";
+                stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    FoodCategory foodCategory = new FoodCategory();
+                    foodCategory.Id = rs.getInt("Id");
+                    foodCategory.Name = rs.getString("Name");
+
+                    foodCategories.add(foodCategory);
+                }
+
+                String queryItems = "SELECT [Id], [FoodCategoryId], [Name], [Price] FROM [dbo].[FoodItems]";
+                ResultSet rsItems = stmt.executeQuery(queryItems);
+                while (rsItems.next()) {
+                    FoodItem foodItem = new FoodItem();
+                    foodItem.Id = rsItems.getInt("Id");
+                    foodItem.FoodCategoryId = rsItems.getInt("FoodCategoryId");
+                    foodItem.Name = rsItems.getString("Name");
+                    foodItem.Price = rsItems.getFloat("Price");
+
+                    foodItems.add(foodItem);
+                }*/
+
+                String queryOrder = "SELECT TOP (500) [Id] ,[TableId] ,[Remark] ,[Ordered] ,[Processed] ,[OrderTotalPrice] FROM [dbo].[ViewOrders]  WHERE [Processed]=1 AND [OrderTotalPrice]!=0.00";
+                stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(queryOrder);
+                while (rs.next()) {
+                    ViewOrder viewOrder=new ViewOrder();
+
+                    viewOrder.Id=rs.getInt("Id");
+                    viewOrder.TableId=rs.getInt("TableId");
+                    viewOrder.Remark=rs.getString("Remark");
+                    viewOrder.Ordered=rs.getDate("Ordered");
+                    viewOrder.Processed=rs.getBoolean("Processed");
+                    viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
+
+                    viewOrders.add(viewOrder);
+                }
+
+                String queryItem = "SELECT [OrderId] ,[FoodItemId] ,[Name] ,[Price] ,[Quantity] ,[TotalPrice] FROM [dbo].[ViewOrderItems]";
+                stmt = con.createStatement();
+                ResultSet rs1 = stmt.executeQuery(queryItem);
+                while (rs1.next()) {
+                    ViewOrderItem viewOrderItem=new ViewOrderItem();
+
+                    viewOrderItem.OrderId=rs1.getInt("OrderId");
+                    viewOrderItem.FoodItemId=rs1.getInt("FoodItemId");
+                    viewOrderItem.Name=rs1.getString("Name");
+                    viewOrderItem.Price=rs1.getFloat("Price");
+                    viewOrderItem.Quantity=rs1.getInt("Quantity");
+                    viewOrderItem.TotalPrice=rs1.getFloat("TotalPrice");
+
+                    viewOrderItems.add(viewOrderItem);
+                }
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            } finally {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            }
+        }
+    }
+
     public class CreateOrder extends AsyncTask<String,String,String>
     {
 
