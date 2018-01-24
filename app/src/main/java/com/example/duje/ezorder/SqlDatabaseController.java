@@ -553,7 +553,7 @@ public class SqlDatabaseController {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     viewOrder = new ViewOrder();
-                    
+
                     viewOrder.Id=rs.getInt("Id");
                     viewOrder.TableId=rs.getInt("TableId");
                     viewOrder.Remark=rs.getString("Remark");
@@ -587,6 +587,67 @@ public class SqlDatabaseController {
             {
                 isSuccess = false;
             }
+        }
+    }
+
+    public class ExecuteOrder extends AsyncTask<String,String,String>
+    {
+
+        ModeratorActivity moderatorActivity;
+        Boolean isSuccess = false;
+
+
+        public ExecuteOrder(ModeratorActivity moderatorActivity) {
+            this.moderatorActivity = moderatorActivity;
+        }
+
+        @Override
+        protected String doInBackground(String... args)
+        {
+            try {
+                return updateDatabase();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return "-1";
+        }
+
+        @Override
+        protected void onPostExecute(String Id)
+        {
+            /*if (isSuccess) {
+                Toast.makeText(this.confirmationActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
+            }*/
+        }
+
+        private String updateDatabase()
+                throws SQLException {
+            int Id = -1;
+            try
+            {
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+
+                /*String queryOrdered = "UPDATE [dbo].[Orders] SET [Ordered] = getdate(), [Remark]=? WHERE [Id]=?";
+                PreparedStatement ps = con.prepareStatement(queryOrdered);
+                ps.setString(1, Remark);
+                ps.setInt(2, Order.getInstance().Id);
+                //trebat ce jos jedan prepard statement
+                ps.executeUpdate();*/
+
+                String queryExecute = "UPDATE [dbo].[Orders] SET [Processed]=1 WHERE [Id]=?";
+                PreparedStatement ps = con.prepareStatement(queryExecute);
+                ps.setInt(1, Order.getInstance().Id);
+                ps.executeUpdate();
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+            return String.valueOf(Id);
         }
     }
 

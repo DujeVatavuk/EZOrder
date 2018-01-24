@@ -14,10 +14,10 @@ tools:context="com.example.duje.ezorder.ModeratorActivity">
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/buttonFinish"
+        android:id="@+id/ButtonFinish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Finish order"
         android:visibility="visible"
-        android:clickable="false"/>
+        android:clickable="true"/>
 </LinearLayout>

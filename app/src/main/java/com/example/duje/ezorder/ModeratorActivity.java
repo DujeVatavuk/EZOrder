@@ -1,5 +1,6 @@
 package com.example.duje.ezorder;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +24,7 @@ public class ModeratorActivity extends AppCompatActivity {
     LinearLayout linearMain;
     CheckBox checkBox;
     TextView TextViewTest;
-    Button buttonFinish;
+    Button ButtonFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
         linearMain = findViewById(R.id.linearMain);
         TextViewTest=findViewById(R.id.TextViewTest);
-        buttonFinish=findViewById(R.id.buttonFinish);
+        ButtonFinish=findViewById(R.id.ButtonFinish);
         LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
         SqlDatabaseController.ModerateOrder moderateOrder = new SqlDatabaseController().new ModerateOrder(ModeratorActivity.this, OrderItemList);
         moderateOrder.execute();
@@ -93,6 +94,16 @@ public class ModeratorActivity extends AppCompatActivity {
             checkBox.setOnClickListener(getOnClickDoSomething(checkBox));
             linearMain.addView(checkBox);
         }*/
+        ButtonFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SqlDatabaseController.ExecuteOrder executeOrder = new SqlDatabaseController().new ExecuteOrder(ModeratorActivity.this);
+                executeOrder.execute();
+
+                Intent intent = new Intent(ModeratorActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
