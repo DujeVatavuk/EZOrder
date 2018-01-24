@@ -20,6 +20,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     private Button ButtonConfirm;
     private Button ButtonDecline;
     private TextView TextViewPrice;
+    private EditText EditTextRemark;
     public String allText;
 
     @Override
@@ -31,6 +32,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         ButtonConfirm=findViewById(R.id.ButtonConfirm);
         ButtonDecline=findViewById(R.id.ButtonDecline);
         TextViewPrice=findViewById(R.id.TextViewPrice);
+        EditTextRemark=findViewById(R.id.EditTextRemark);
 
         //ode ce se izvrsit SQL klasa
 
@@ -62,7 +64,8 @@ public class ConfirmationActivity extends AppCompatActivity {
                 /*Intent intent1 = new Intent(ConfirmationActivity.this, ModeratorActivity.class);
                 startActivity(intent1);*/
                 //Ode necemo slat u moderator nego u login ponovo tako da se mora logirati da bi se doslo do moderatora
-                SqlDatabaseController.ConfirmOrder cfo = new SqlDatabaseController().new ConfirmOrder(ConfirmationActivity.this);
+
+                SqlDatabaseController.ConfirmOrder cfo = new SqlDatabaseController().new ConfirmOrder(ConfirmationActivity.this, EditTextRemark.getText().toString());
                 cfo.execute();
 
                 Intent intent1 = new Intent(ConfirmationActivity.this, LoginActivity.class);
@@ -83,6 +86,8 @@ public class ConfirmationActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }*/
                 //ode treba iz baze pomogucnosti izbrisati trenutni order i napraviti novi order
+
+
                 SqlDatabaseController.CreateOrder CreateOrder = new SqlDatabaseController().new CreateOrder(ConfirmationActivity.this);
                 CreateOrder.execute();
 

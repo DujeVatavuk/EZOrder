@@ -405,12 +405,14 @@ public class SqlDatabaseController {
     {
 
         ConfirmationActivity confirmationActivity;
+        String Remark;
         Boolean isSuccess = false;
 
 
-        public ConfirmOrder(ConfirmationActivity confirmationActivity) {
+        public ConfirmOrder(ConfirmationActivity confirmationActivity, String remark) {
             this.confirmationActivity = confirmationActivity;
-            order = Order.getInstance();
+            this.Remark=remark;
+            //order = Order.getInstance();
         }
 
         @Override
@@ -451,9 +453,10 @@ public class SqlDatabaseController {
                     viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
                 }
                  */
-                String queryOrdered = "UPDATE [dbo].[Orders] SET [Ordered] = getdate() WHERE [Id]=?";
+                String queryOrdered = "UPDATE [dbo].[Orders] SET [Ordered] = getdate(), [Remark]=? WHERE [Id]=?";
                 PreparedStatement ps = con.prepareStatement(queryOrdered);
-                ps.setInt(1, Order.getInstance().Id);
+                ps.setString(1, Remark);
+                ps.setInt(2, Order.getInstance().Id);
                 //trebat ce jos jedan prepard statement
                 ps.executeUpdate();
 
