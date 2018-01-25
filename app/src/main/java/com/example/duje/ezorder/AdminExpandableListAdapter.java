@@ -96,7 +96,7 @@ public class AdminExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        String headerTitle = String.valueOf(((ViewOrder)getGroup(i)).Id) + "  " + String.valueOf(((ViewOrder)getGroup(i)).TableId) + "  $" + String.valueOf(((ViewOrder)getGroup(i)).TotalPrice) + "  " + String.valueOf(((ViewOrder)getGroup(i)).Ordered);
+        String headerTitle = "Order ID: " + String.valueOf(((ViewOrder)getGroup(i)).Id) + "    Table ID: " + String.valueOf(((ViewOrder)getGroup(i)).TableId) + "    Total price: $" + String.valueOf(((ViewOrder)getGroup(i)).TotalPrice) + "    Date: " + String.valueOf(((ViewOrder)getGroup(i)).Ordered);
         if(view == null)
         {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

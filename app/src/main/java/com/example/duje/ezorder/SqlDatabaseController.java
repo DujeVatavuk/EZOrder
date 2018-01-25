@@ -326,7 +326,7 @@ public class SqlDatabaseController {
         @Override
         protected void onPostExecute(String Id)
         {
-            try {
+            /*try {
                 if (isSuccess) {
                     Toast.makeText(this.loginActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
                 }
@@ -339,7 +339,7 @@ public class SqlDatabaseController {
                 }
             } catch (Exception e) {
                 Log.e("fail confirmation", e.getMessage());
-            }
+            }*/
         }
 
         private String updateDatabase()
@@ -401,7 +401,7 @@ public class SqlDatabaseController {
         protected void onPostExecute(String Id)
         {
             if (isSuccess) {
-                Toast.makeText(this.userActivity , "OrderItem: " + String.valueOf(Id) , Toast.LENGTH_LONG).show();
+                //Toast.makeText(this.userActivity , "OrderItem: " + String.valueOf(Id) , Toast.LENGTH_LONG).show();
             }
         }
 

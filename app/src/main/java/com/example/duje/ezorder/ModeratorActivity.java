@@ -118,7 +118,6 @@ public class ModeratorActivity extends AppCompatActivity {
 
     void fillLinkedHashMap(List<ViewOrderItem> viewOrderItems, LinkedHashMap<String, String> OrderItemList){
         int k=1;
-        boolean isAllChecked=true;
         for (ViewOrderItem viewOrderItem : viewOrderItems){
             OrderItemList.put(String.valueOf(k), viewOrderItem.Name);
             k++;
@@ -144,7 +143,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
     void MetodaZaTestiranje(List<ViewOrder> viewOrders){
         for (ViewOrder viewOrder : viewOrders){
-            TextViewTest.setText(String.valueOf(viewOrder.Id) + "  " + String.valueOf(viewOrder.TableId) + "  " + String.valueOf(viewOrder.TotalPrice) + "  " + String.valueOf(viewOrder.Ordered) + "  " + String.valueOf(viewOrder.Remark) + "  " + String.valueOf(viewOrder.Processed));
+            TextViewTest.setText("Order ID: " + String.valueOf(viewOrder.Id) + "\nTable ID: " + String.valueOf(viewOrder.TableId) + "\nTotal price: $" + String.valueOf(viewOrder.TotalPrice) + "\nDate: " + String.valueOf(viewOrder.Ordered) + "\nRemark: \"" + String.valueOf(viewOrder.Remark) + "\"");
         }
     }
 }

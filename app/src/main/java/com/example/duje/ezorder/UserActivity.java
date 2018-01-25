@@ -97,6 +97,6 @@ public class UserActivity extends AppCompatActivity {
         listAdapter = new FoodExpandableListAdapter(this, FoodCategories, FoodItems);
         listView.setAdapter(listAdapter);
 
-        Toast.makeText(getApplicationContext(), "Order: " + String.valueOf(Order.getInstance().Id), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Order: " + String.valueOf(Order.getInstance().Id), Toast.LENGTH_SHORT).show();
     }
 }
