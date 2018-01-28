@@ -43,7 +43,6 @@ public class SqlDatabaseController {
 
         List<FoodCategory> foodCategories;
         List<FoodItem> foodItems;
-        HashMap<String,List<String>> listHash;
 
         public GetFoodCategory(UserActivity userActivity) {
             this.userActivity = userActivity;
@@ -62,7 +61,7 @@ public class SqlDatabaseController {
         }
 
         @Override
-        protected void onPostExecute(Boolean isSuccess)
+        protected void onPostExecute(Boolean isSuccess)//executes after async task is finished
         {
             if (isSuccess) {
                 userActivity.InitData(foodCategories, foodItems);
@@ -71,13 +70,13 @@ public class SqlDatabaseController {
 
         private void readDatabase()
                 throws SQLException {
-            foodCategories = new ArrayList<FoodCategory>();
-            foodItems = new ArrayList<FoodItem>();
+            foodCategories = new ArrayList<>();//<FoodCategory>
+            foodItems = new ArrayList<>();//<FoodItem>
             Statement stmt = null;
             try
             {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+                con = DriverManager.getConnection(db, un, pass);// Connect to database
 
                 String query = "SELECT [Id], [Name] FROM [FoodCategories]";
                 stmt = con.createStatement();
@@ -243,7 +242,6 @@ public class SqlDatabaseController {
             order = Order.getInstance();
         }
 
-        //@Override
         public CreateOrder(ConfirmationActivity confirmationActivity) {
             this.confirmationActivity = confirmationActivity;
             order = Order.getInstance();
@@ -262,32 +260,16 @@ public class SqlDatabaseController {
         }
 
         @Override
-        protected void onPostExecute(String Id)
-        {
-            /*try {
-                if (isSuccess) {
-                    Toast.makeText(this.loginActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
-                }
-            } catch (Exception e) {
-                Log.e("fail login", e.getMessage());
-            }
-            try {
-                if (isSuccess) {
-                    Toast.makeText(this.confirmationActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
-                }
-            } catch (Exception e) {
-                Log.e("fail confirmation", e.getMessage());
-            }*/
-        }
+        protected void onPostExecute(String Id) {}
 
         private String updateDatabase()
                 throws SQLException {
             int Id = -1;
-            int TableId = 1; // hardkodirano
+            int TableId = 1; // hardcoded
             try
             {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+                con = DriverManager.getConnection(db, un, pass);// Connect to database
 
                 String query = "INSERT INTO [dbo].[Orders] ([TableId]) VALUES (?)";
                 PreparedStatement ps = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
@@ -298,7 +280,6 @@ public class SqlDatabaseController {
                 while (rs.next()) {
                     // Get automatically generated key value
                     Order.getInstance().Id = rs.getInt(1);
-
                 }
                 rs.close();
                 isSuccess = true;
@@ -336,12 +317,7 @@ public class SqlDatabaseController {
         }
 
         @Override
-        protected void onPostExecute(String Id)
-        {
-            if (isSuccess) {
-                //Toast.makeText(this.userActivity , "OrderItem: " + String.valueOf(Id) , Toast.LENGTH_LONG).show();
-            }
-        }
+        protected void onPostExecute(String Id) {}
 
         private String updateDatabase()
                 throws SQLException {
@@ -463,11 +439,9 @@ public class SqlDatabaseController {
         String Remark;
         Boolean isSuccess = false;
 
-
         public ConfirmOrder(ConfirmationActivity confirmationActivity, String remark) {
             this.confirmationActivity = confirmationActivity;
             this.Remark=remark;
-            //order = Order.getInstance();
         }
 
         @Override
@@ -483,36 +457,20 @@ public class SqlDatabaseController {
         }
 
         @Override
-        protected void onPostExecute(String Id)
-        {
-            /*if (isSuccess) {
-                Toast.makeText(this.confirmationActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
-            }*/
-        }
+        protected void onPostExecute(String Id) {}
 
         private String updateDatabase()
                 throws SQLException {
             int Id = -1;
-            //int TableId = 1; // hardkodirano
             try
             {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(db, un, pass);        // Connect to database
-                /*
-                String queryPrice = "SELECT TOP 1 [OrderTotalPrice] FROM [dbo].[ViewOrders] WHERE Id=(?)";
-                PreparedStatement ps = con.prepareStatement(queryPrice);
-                ps.setInt(1, Order.getInstance().Id);//valjda
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    viewOrder = new ViewOrder();
-                    viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
-                }
-                 */
+                con = DriverManager.getConnection(db, un, pass);// Connect to database
+
                 String queryOrdered = "UPDATE [dbo].[Orders] SET [Ordered] = getdate(), [Remark]=? WHERE [Id]=?";
                 PreparedStatement ps = con.prepareStatement(queryOrdered);
                 ps.setString(1, Remark);
                 ps.setInt(2, Order.getInstance().Id);
-                //trebat ce jos jedan prepard statement
                 ps.executeUpdate();
 
                 isSuccess = true;
@@ -537,8 +495,6 @@ public class SqlDatabaseController {
         ViewOrderItem viewOrderItem;
         List<ViewOrderItem> viewOrderItems;
 
-
-
         public ModerateOrder(ModeratorActivity moderatorActivity, LinkedHashMap<String, String> orderItemList) {
             this.moderatorActivity = moderatorActivity;
             this.OrderItemList=orderItemList;
@@ -559,10 +515,9 @@ public class SqlDatabaseController {
         @Override
         protected void onPostExecute(Boolean isSuccess)
         {
-            if (isSuccess) {//odi pisem funkciju koja se izvrsava u confitmation activityu
-                //fillhashmap
-                moderatorActivity.MetodaZaTestiranje(viewOrders);
-                moderatorActivity.fillLinkedHashMap(viewOrderItems, OrderItemList);
+            if (isSuccess) {
+                moderatorActivity.ShowOrderInfo(viewOrders);
+                moderatorActivity.FillLinkedHashMap(viewOrderItems, OrderItemList);
             }
         }
 
@@ -575,35 +530,11 @@ public class SqlDatabaseController {
             try
             {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(db, un, pass);        // Connect to database
+                con = DriverManager.getConnection(db, un, pass);// Connect to database
 
-                /*String queryPrice = "SELECT TOP 1 [OrderTotalPrice] FROM [dbo].[ViewOrders] WHERE Id=(?)";
-                PreparedStatement ps = con.prepareStatement(queryPrice);
-                ps.setInt(1, Order.getInstance().Id);//valjda
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    viewOrder = new ViewOrder();
-                    viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
-                }
-
-                String queryOrder = "SELECT [OrderId], [FoodItemId], [Name], [Price], [Quantity], [TotalPrice] FROM [dbo].[ViewOrderItems] WHERE [OrderId]=(?)";
-                PreparedStatement ps1 = con.prepareStatement(queryOrder);
-                ps1.setInt(1, Order.getInstance().Id);//valjda
-                ResultSet rs1 = ps1.executeQuery();
-                while (rs1.next()) {
-                    ViewOrderItem viewOrderItem = new ViewOrderItem();
-
-                    viewOrderItem.OrderId=rs1.getInt("OrderId");
-                    viewOrderItem.FoodItemId=rs1.getInt("FoodItemId");
-                    viewOrderItem.Name=rs1.getString("Name");
-                    viewOrderItem.Price=rs1.getFloat("Price");
-                    viewOrderItem.Quantity=rs1.getInt("Quantity");
-                    viewOrderItem.TotalPrice=rs1.getFloat("TotalPrice");
-
-                    viewOrderItems.add(viewOrderItem);*/
                 String queryPrice = "SELECT TOP 1 [Id] ,[TableId] ,[Remark] ,[Ordered] ,[Processed], [OrderTotalPrice] FROM [dbo].[ViewOrders] WHERE Id=(?)";
                 PreparedStatement ps = con.prepareStatement(queryPrice);
-                ps.setInt(1, Order.getInstance().Id);//valjda
+                ps.setInt(1, Order.getInstance().Id);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     viewOrder = new ViewOrder();
@@ -611,7 +542,7 @@ public class SqlDatabaseController {
                     viewOrder.Id=rs.getInt("Id");
                     viewOrder.TableId=rs.getInt("TableId");
                     viewOrder.Remark=rs.getString("Remark");
-                    viewOrder.Ordered=rs.getDate("Ordered");//pazit na format
+                    viewOrder.Ordered=rs.getDate("Ordered");//?Is MsSQL getDate same as Java getDate?
                     viewOrder.Processed=rs.getBoolean("Processed");
                     viewOrder.TotalPrice=rs.getFloat("OrderTotalPrice");
 
@@ -703,32 +634,5 @@ public class SqlDatabaseController {
             }
             return String.valueOf(Id);
         }
-    }
-
-    public Connection connectionclass(String user, String password, String database, String server)
-    {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String ConnectionURL = null;
-        try
-        {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            ConnectionURL = "jdbc:jtds:sqlserver://" + server + database + ";user=" + user+ ";password=" + password + ";";
-            connection = DriverManager.getConnection(ConnectionURL);
-        }
-        catch (SQLException se)
-        {
-            Log.e("error here 1 : ", se.getMessage());
-        }
-        catch (ClassNotFoundException e)
-        {
-            Log.e("error here 2 : ", e.getMessage());
-        }
-        catch (Exception e)
-        {
-            Log.e("error here 3 : ", e.getMessage());
-        }
-        return connection;
     }
 }

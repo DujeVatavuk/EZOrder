@@ -34,62 +34,27 @@ public class ConfirmationActivity extends AppCompatActivity {
         textViewPrice=findViewById(R.id.textViewPrice);
         editTextRemark=findViewById(R.id.editTextRemark);
 
-        //ode ce se izvrsit SQL klasa
-
-        SqlDatabaseController.GetOrder getOrder = new SqlDatabaseController().new GetOrder(ConfirmationActivity.this);
-        getOrder.execute();
-
-        /*File file=new File(getFilesDir(),"todofile.txt");
-        String completeText="";
-        try{
-            FileReader reader=new FileReader(file);
-            BufferedReader br = new BufferedReader(reader);
-            String sCurrentLine;
-            while ((sCurrentLine = br.readLine()) != null) {
-                completeText+=sCurrentLine+"\n";
-                System.out.println(sCurrentLine);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }*/
-        /*Intent pintent = getIntent();
-        int Price = pintent.getIntExtra("PRICE", 0);*/
-        //textViewPrice.setText("Total price is: $0");// + Price);//ode e doc onaj price iz baze, ne ovo moje
-        //ode treba dodat da ispisuje cila narudzba (Order items)
-        //textViewOrder.setText(completeText);//treba dodat da se kroz njega moze scrollat
+        SqlDatabaseController.GetOrder gor = new SqlDatabaseController().new GetOrder(ConfirmationActivity.this);
+        gor.execute();
 
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent1 = new Intent(ConfirmationActivity.this, ModeratorActivity.class);
-                startActivity(intent1);*/
-                //Ode necemo slat u moderator nego u login ponovo tako da se mora logirati da bi se doslo do moderatora
 
                 SqlDatabaseController.ConfirmOrder cfo = new SqlDatabaseController().new ConfirmOrder(ConfirmationActivity.this, editTextRemark.getText().toString());
                 cfo.execute();
 
-                Intent intent1 = new Intent(ConfirmationActivity.this, LoginActivity.class);
-                startActivity(intent1);
+                Intent intent = new Intent(ConfirmationActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
         buttonDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*try{
-                    File file = new File(getFilesDir(), "todofile.txt");
-                    FileWriter writer = new FileWriter(file);
-                    writer.append("");//izbrise sve sta je bilo u fileu
-                    writer.flush();
-                    writer.close();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }*/
-                //ode treba iz baze pomogucnosti izbrisati trenutni order i napraviti novi order
 
-
-                SqlDatabaseController.CreateOrder CreateOrder = new SqlDatabaseController().new CreateOrder(ConfirmationActivity.this);
-                CreateOrder.execute();
+                SqlDatabaseController.CreateOrder cor = new SqlDatabaseController().new CreateOrder(ConfirmationActivity.this);
+                cor.execute();
 
                 Intent intent2 = new Intent(ConfirmationActivity.this, UserActivity.class);
                 startActivity(intent2);
@@ -97,7 +62,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         });
     }
 
-    public void WritePrice(ViewOrder viewOrder, List<ViewOrderItem> viewOrderItems){//cijena)
+    public void WritePrice(ViewOrder viewOrder, List<ViewOrderItem> viewOrderItems){
         textViewPrice.setText("Total price is: $" + String.valueOf(viewOrder.TotalPrice));
 
         for (ViewOrderItem viewOrderItem : viewOrderItems){
@@ -108,6 +73,6 @@ public class ConfirmationActivity extends AppCompatActivity {
                 allText += viewOrderItem.Name + "\t\t$" + String.valueOf(viewOrderItem.Price) + "\t\tx" + String.valueOf(viewOrderItem.Quantity) + "\t\t$" + String.valueOf(viewOrderItem.TotalPrice) + "\n";
             }
         }
-        textViewOrder.setText(allText.trim().substring(4));//iz nekog razloga prva pise null ispred imena prvog jela
+        textViewOrder.setText(allText.trim().substring(4));//to remove "null" before first food item name
     }
 }

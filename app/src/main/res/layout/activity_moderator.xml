@@ -14,7 +14,7 @@ tools:context="com.example.duje.ezorder.ModeratorActivity">
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/ButtonFinish"
+        android:id="@+id/buttonFinish"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

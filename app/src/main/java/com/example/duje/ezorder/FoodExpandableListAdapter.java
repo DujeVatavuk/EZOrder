@@ -23,15 +23,10 @@ public class FoodExpandableListAdapter extends BaseExpandableListAdapter {
     public FoodExpandableListAdapter(Context context, List<FoodCategory> FoodCategories, List<FoodItem> FoodItems) {
         this.context = context;
         this.listDataHeader = FoodCategories;
-        this.listHashMap = new HashMap<FoodCategory,List<FoodItem>>();
-
-        /*
-        for (FoodCategory foodCategory : FoodCategories) {
-            listDataHeader.add(foodCategory.Name);
-        }*/
+        this.listHashMap = new HashMap<>();//<FoodCategory,List<FoodItem>>
 
         for (FoodCategory foodCategory : FoodCategories) {
-            ArrayList<FoodItem> foodItemsArray = new ArrayList<FoodItem>();
+            ArrayList<FoodItem> foodItemsArray = new ArrayList<>();//<FoodItem>
 
             for (FoodItem foodItem: FoodItems) {
                 if (foodItem.FoodCategoryId == foodCategory.Id) {
@@ -65,13 +60,11 @@ public class FoodExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int i) {
-        //return i;
         return listDataHeader.get(i).Id;
     }
 
     @Override
     public long getChildId(int i, int i1) {
-        //return i1;
         return  listHashMap.get(listDataHeader.get(i)).get(i1).Id;
     }
 
@@ -88,7 +81,7 @@ public class FoodExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.list_group,null);
         }
-        TextView lblListHeader = (TextView)view.findViewById(R.id.lblListHeader);
+        TextView lblListHeader = view.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
         return view;
