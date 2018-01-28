@@ -20,12 +20,12 @@ Admin can see all processed orders and statistics.
 REALISATION:
 This is by no means an finished product, moderator and admin accounts still miss some of the functionalities.
 
-ADMIN: Username: Admin, Password: 1234
-MODERATOR: Username: Moderator, Password: 1234
-DB: Name: EZOrder, Username: test, Password: test
+- ADMIN: Username: Admin, Password: 1234.
+- MODERATOR: Username: Moderator, Password: 1234.
+- DB: Name: EZOrder, Username: test, Password: test.
 
 ATTENTION
 In folder SQLScripts there ar two scripts that you have to run before running application.
-EZOrderScriptSchema is an SQL script for empty database
-EZOrderScriptSchemaData is an SQL script for filed database
+- EZOrderScriptSchema is an SQL script for empty database.
+- EZOrderScriptSchemaData is an SQL script for filed database.
 Both scripts miss DB & DB log adress, you have to fill that on your own.
