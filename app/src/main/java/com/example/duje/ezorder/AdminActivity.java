@@ -17,7 +17,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private Button buttonExit;
     private ExpandableListView expandableListViewAdmin;
-    private AdminExpandableListAdapter ExpandableListAdapterAdmin;
+    private AdminExpandableListAdapter expandableListAdapterAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +27,8 @@ public class AdminActivity extends AppCompatActivity {
         buttonExit=findViewById(R.id.buttonExit);
         expandableListViewAdmin=findViewById(R.id.expandableListViewAdmin);
 
-        SqlDatabaseController.GetInfoForAdmin getInfoForAdmin = new SqlDatabaseController().new GetInfoForAdmin(AdminActivity.this);
-        getInfoForAdmin.execute();
+        SqlDatabaseController.GetInfoForAdmin gia = new SqlDatabaseController().new GetInfoForAdmin(AdminActivity.this);
+        gia.execute();
 
         buttonExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,13 +40,8 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
-    public void CollectData(List<ViewOrder> viewOrders,
-                            List<ViewOrderItem> viewOrderItems){
-
-        // convert to List<String>
-        ExpandableListAdapterAdmin = new AdminExpandableListAdapter(this, viewOrders, viewOrderItems);
-        expandableListViewAdmin.setAdapter(ExpandableListAdapterAdmin);
-
-        Toast.makeText(getApplicationContext(), "Order: " + String.valueOf(Order.getInstance().Id), Toast.LENGTH_SHORT).show();
+    public void CollectData(List<ViewOrder> viewOrders, List<ViewOrderItem> viewOrderItems){
+        expandableListAdapterAdmin = new AdminExpandableListAdapter(this, viewOrders, viewOrderItems);
+        expandableListViewAdmin.setAdapter(expandableListAdapterAdmin);
     }
 }

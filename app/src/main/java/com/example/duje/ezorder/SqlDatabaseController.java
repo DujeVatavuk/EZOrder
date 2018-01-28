@@ -119,12 +119,8 @@ public class SqlDatabaseController {
         AdminActivity adminActivity;
         Boolean isSuccess = false;
 
-        /*List<FoodCategory> foodCategories;
-        List<FoodItem> foodItems;
-        HashMap<String,List<String>> listHash;*/
         List<ViewOrder> viewOrders;
         List<ViewOrderItem> viewOrderItems;
-        HashMap<String,List<String>> listAdminHash;
 
         public GetInfoForAdmin(AdminActivity adminActivity) {
             this.adminActivity = adminActivity;
@@ -152,38 +148,13 @@ public class SqlDatabaseController {
 
         private void readDatabase()
                 throws SQLException {
-            /*foodCategories = new ArrayList<FoodCategory>();
-            foodItems = new ArrayList<FoodItem>();*/
             viewOrders=new ArrayList<>();
             viewOrderItems=new ArrayList<>();
             Statement stmt = null;
             try
             {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(db, un, pass);        // Connect to database
-
-                /*String query = "SELECT [Id], [Name] FROM [FoodCategories]";
-                stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while (rs.next()) {
-                    FoodCategory foodCategory = new FoodCategory();
-                    foodCategory.Id = rs.getInt("Id");
-                    foodCategory.Name = rs.getString("Name");
-
-                    foodCategories.add(foodCategory);
-                }
-
-                String queryItems = "SELECT [Id], [FoodCategoryId], [Name], [Price] FROM [dbo].[FoodItems]";
-                ResultSet rsItems = stmt.executeQuery(queryItems);
-                while (rsItems.next()) {
-                    FoodItem foodItem = new FoodItem();
-                    foodItem.Id = rsItems.getInt("Id");
-                    foodItem.FoodCategoryId = rsItems.getInt("FoodCategoryId");
-                    foodItem.Name = rsItems.getString("Name");
-                    foodItem.Price = rsItems.getFloat("Price");
-
-                    foodItems.add(foodItem);
-                }*/
+                con = DriverManager.getConnection(db, un, pass);// Connect to database
 
                 String queryOrder = "SELECT TOP (500) [Id] ,[TableId] ,[Remark] ,[Ordered] ,[Processed] ,[OrderTotalPrice] FROM [dbo].[ViewOrders]  WHERE [Processed]=1 AND [OrderTotalPrice]!=0.00";
                 stmt = con.createStatement();
@@ -577,10 +548,8 @@ public class SqlDatabaseController {
 
     public class ExecuteOrder extends AsyncTask<String,String,String>
     {
-
         ModeratorActivity moderatorActivity;
         Boolean isSuccess = false;
-
 
         public ExecuteOrder(ModeratorActivity moderatorActivity) {
             this.moderatorActivity = moderatorActivity;
@@ -599,12 +568,7 @@ public class SqlDatabaseController {
         }
 
         @Override
-        protected void onPostExecute(String Id)
-        {
-            /*if (isSuccess) {
-                Toast.makeText(this.confirmationActivity, "Order: " + String.valueOf(Id), Toast.LENGTH_LONG).show();
-            }*/
-        }
+        protected void onPostExecute(String Id) {}
 
         private String updateDatabase()
                 throws SQLException {
@@ -612,14 +576,7 @@ public class SqlDatabaseController {
             try
             {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(db, un, pass);        // Connect to database
-
-                /*String queryOrdered = "UPDATE [dbo].[Orders] SET [Ordered] = getdate(), [Remark]=? WHERE [Id]=?";
-                PreparedStatement ps = con.prepareStatement(queryOrdered);
-                ps.setString(1, Remark);
-                ps.setInt(2, Order.getInstance().Id);
-                //trebat ce jos jedan prepard statement
-                ps.executeUpdate();*/
+                con = DriverManager.getConnection(db, un, pass);// Connect to database
 
                 String queryExecute = "UPDATE [dbo].[Orders] SET [Processed]=1 WHERE [Id]=?";
                 PreparedStatement ps = con.prepareStatement(queryExecute);

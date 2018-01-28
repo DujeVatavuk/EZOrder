@@ -66,7 +66,7 @@ public class ModeratorActivity extends AppCompatActivity {
     void FillLinkedHashMap(List<ViewOrderItem> viewOrderItems, LinkedHashMap<String, String> OrderItemList){
         int k=1;
         for (ViewOrderItem viewOrderItem : viewOrderItems){
-            OrderItemList.put(String.valueOf(k), viewOrderItem.Name);
+            OrderItemList.put(String.valueOf(k), viewOrderItem.Name + "  x" + viewOrderItem.Quantity);
             k++;
         }
         Set<?> set = OrderItemList.entrySet();
