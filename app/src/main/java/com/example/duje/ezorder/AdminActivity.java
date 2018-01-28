@@ -15,8 +15,8 @@ import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
 
-    private Button ButtonExit;
-    private ExpandableListView ExpandableListViewAdmin;
+    private Button buttonExit;
+    private ExpandableListView expandableListViewAdmin;
     private AdminExpandableListAdapter ExpandableListAdapterAdmin;
 
     @Override
@@ -24,13 +24,13 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        ButtonExit=findViewById(R.id.ButtonExit);
-        ExpandableListViewAdmin=findViewById(R.id.ExpandableListViewAdmin);
+        buttonExit=findViewById(R.id.buttonExit);
+        expandableListViewAdmin=findViewById(R.id.expandableListViewAdmin);
 
         SqlDatabaseController.GetInfoForAdmin getInfoForAdmin = new SqlDatabaseController().new GetInfoForAdmin(AdminActivity.this);
         getInfoForAdmin.execute();
 
-        ButtonExit.setOnClickListener(new View.OnClickListener() {
+        buttonExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
@@ -45,7 +45,7 @@ public class AdminActivity extends AppCompatActivity {
 
         // convert to List<String>
         ExpandableListAdapterAdmin = new AdminExpandableListAdapter(this, viewOrders, viewOrderItems);
-        ExpandableListViewAdmin.setAdapter(ExpandableListAdapterAdmin);
+        expandableListViewAdmin.setAdapter(ExpandableListAdapterAdmin);
 
         Toast.makeText(getApplicationContext(), "Order: " + String.valueOf(Order.getInstance().Id), Toast.LENGTH_SHORT).show();
     }

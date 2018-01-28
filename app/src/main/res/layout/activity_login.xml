@@ -7,7 +7,7 @@
     tools:context="com.example.duje.ezorder.LoginActivity">
 
     <AutoCompleteTextView
-        android:id="@+id/AutoCompeteTextViewUsername"
+        android:id="@+id/autoCompleteTextViewUsername"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginEnd="24dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/EditTextPassword"
+        android:id="@+id/editTextPassword"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginEnd="24dp"
@@ -33,10 +33,10 @@
         android:hint="PIN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AutoCompeteTextViewUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewUsername" />
 
     <Button
-        android:id="@+id/ButtonNoSignIn"
+        android:id="@+id/buttonNoLogIn"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:layout_marginEnd="24dp"
@@ -46,10 +46,10 @@
         android:text="Continue without login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ButtonSignIn" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogIn" />
 
     <Button
-        android:id="@+id/ButtonSignIn"
+        android:id="@+id/buttonLogIn"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:layout_marginEnd="24dp"
@@ -60,5 +60,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 </android.support.constraint.ConstraintLayout>

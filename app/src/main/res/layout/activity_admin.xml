@@ -8,14 +8,14 @@
     tools:context="com.example.duje.ezorder.AdminActivity">
 
     <Button
-        android:id="@+id/ButtonExit"
+        android:id="@+id/buttonExit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.01"
         android:text="Exit" />
 
     <ExpandableListView
-        android:id="@+id/ExpandableListViewAdmin"
+        android:id="@+id/expandableListViewAdmin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />

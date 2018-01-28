@@ -23,7 +23,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
     LinearLayout linearMain;
     CheckBox checkBox;
-    TextView TextViewTest;
+    TextView textViewInfo;
     Button ButtonFinish;
 
     @Override
@@ -34,7 +34,7 @@ public class ModeratorActivity extends AppCompatActivity {
         //ode dinamicki trebam stavit checkboxove za svaki item sa narudzbe
 
         linearMain = findViewById(R.id.linearMain);
-        TextViewTest=findViewById(R.id.TextViewTest);
+        textViewInfo=findViewById(R.id.textViewInfo);
         ButtonFinish=findViewById(R.id.ButtonFinish);
         LinkedHashMap<String, String> OrderItemList = new LinkedHashMap<String, String>();
         SqlDatabaseController.ModerateOrder moderateOrder = new SqlDatabaseController().new ModerateOrder(ModeratorActivity.this, OrderItemList);
@@ -143,7 +143,7 @@ public class ModeratorActivity extends AppCompatActivity {
 
     void MetodaZaTestiranje(List<ViewOrder> viewOrders){
         for (ViewOrder viewOrder : viewOrders){
-            TextViewTest.setText("Order ID: " + String.valueOf(viewOrder.Id) + "\nTable ID: " + String.valueOf(viewOrder.TableId) + "\nTotal price: $" + String.valueOf(viewOrder.TotalPrice) + "\nDate: " + String.valueOf(viewOrder.Ordered) + "\nRemark: \"" + String.valueOf(viewOrder.Remark) + "\"");
+            textViewInfo.setText("Order ID: " + String.valueOf(viewOrder.Id) + "\nTable ID: " + String.valueOf(viewOrder.TableId) + "\nTotal price: $" + String.valueOf(viewOrder.TotalPrice) + "\nDate: " + String.valueOf(viewOrder.Ordered) + "\nRemark: \"" + String.valueOf(viewOrder.Remark) + "\"");
         }
     }
 }

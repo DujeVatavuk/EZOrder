@@ -16,11 +16,11 @@ import java.util.List;
 
 public class ConfirmationActivity extends AppCompatActivity {
 
-    private TextView TextViewOrder;
-    private Button ButtonConfirm;
-    private Button ButtonDecline;
-    private TextView TextViewPrice;
-    private EditText EditTextRemark;
+    private TextView textViewOrder;
+    private Button buttonConfirm;
+    private Button buttonDecline;
+    private TextView textViewPrice;
+    private EditText editTextRemark;
     public String allText;
 
     @Override
@@ -28,11 +28,11 @@ public class ConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
 
-        TextViewOrder=findViewById(R.id.TextViewOrder);
-        ButtonConfirm=findViewById(R.id.ButtonConfirm);
-        ButtonDecline=findViewById(R.id.ButtonDecline);
-        TextViewPrice=findViewById(R.id.TextViewPrice);
-        EditTextRemark=findViewById(R.id.EditTextRemark);
+        textViewOrder=findViewById(R.id.textViewOrder);
+        buttonConfirm=findViewById(R.id.buttonConfirm);
+        buttonDecline=findViewById(R.id.buttonDecline);
+        textViewPrice=findViewById(R.id.textViewPrice);
+        editTextRemark=findViewById(R.id.editTextRemark);
 
         //ode ce se izvrsit SQL klasa
 
@@ -54,18 +54,18 @@ public class ConfirmationActivity extends AppCompatActivity {
         }*/
         /*Intent pintent = getIntent();
         int Price = pintent.getIntExtra("PRICE", 0);*/
-        //TextViewPrice.setText("Total price is: $0");// + Price);//ode e doc onaj price iz baze, ne ovo moje
+        //textViewPrice.setText("Total price is: $0");// + Price);//ode e doc onaj price iz baze, ne ovo moje
         //ode treba dodat da ispisuje cila narudzba (Order items)
-        //TextViewOrder.setText(completeText);//treba dodat da se kroz njega moze scrollat
+        //textViewOrder.setText(completeText);//treba dodat da se kroz njega moze scrollat
 
-        ButtonConfirm.setOnClickListener(new View.OnClickListener() {
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*Intent intent1 = new Intent(ConfirmationActivity.this, ModeratorActivity.class);
                 startActivity(intent1);*/
                 //Ode necemo slat u moderator nego u login ponovo tako da se mora logirati da bi se doslo do moderatora
 
-                SqlDatabaseController.ConfirmOrder cfo = new SqlDatabaseController().new ConfirmOrder(ConfirmationActivity.this, EditTextRemark.getText().toString());
+                SqlDatabaseController.ConfirmOrder cfo = new SqlDatabaseController().new ConfirmOrder(ConfirmationActivity.this, editTextRemark.getText().toString());
                 cfo.execute();
 
                 Intent intent1 = new Intent(ConfirmationActivity.this, LoginActivity.class);
@@ -73,7 +73,7 @@ public class ConfirmationActivity extends AppCompatActivity {
             }
         });
 
-        ButtonDecline.setOnClickListener(new View.OnClickListener() {
+        buttonDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*try{
@@ -98,7 +98,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
     public void WritePrice(ViewOrder viewOrder, List<ViewOrderItem> viewOrderItems){//cijena)
-        TextViewPrice.setText("Total price is: $" + String.valueOf(viewOrder.TotalPrice));
+        textViewPrice.setText("Total price is: $" + String.valueOf(viewOrder.TotalPrice));
 
         for (ViewOrderItem viewOrderItem : viewOrderItems){
             if (viewOrderItem.Quantity==1){
@@ -108,6 +108,6 @@ public class ConfirmationActivity extends AppCompatActivity {
                 allText += viewOrderItem.Name + "\t\t$" + String.valueOf(viewOrderItem.Price) + "\t\tx" + String.valueOf(viewOrderItem.Quantity) + "\t\t$" + String.valueOf(viewOrderItem.TotalPrice) + "\n";
             }
         }
-        TextViewOrder.setText(allText.trim().substring(4));//iz nekog razloga prva pise null ispred imena prvog jela
+        textViewOrder.setText(allText.trim().substring(4));//iz nekog razloga prva pise null ispred imena prvog jela
     }
 }

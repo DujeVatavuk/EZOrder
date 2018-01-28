@@ -14,22 +14,22 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private AutoCompleteTextView AutoCompleteTextViewUsername;
-    private EditText EditTextPassword;
-    private Button ButtonNoSignIn;
-    private Button ButtonSignIn;
+    private AutoCompleteTextView autoCompleteTextViewUsername;
+    private EditText editTextPassword;
+    private Button buttonNoLogIn;
+    private Button buttonLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        AutoCompleteTextViewUsername=findViewById(R.id.AutoCompeteTextViewUsername);
-        EditTextPassword=findViewById(R.id.EditTextPassword);
-        ButtonNoSignIn=findViewById(R.id.ButtonNoSignIn);
-        ButtonSignIn=findViewById(R.id.ButtonSignIn);
+        autoCompleteTextViewUsername=findViewById(R.id.autoCompleteTextViewUsername);
+        editTextPassword=findViewById(R.id.editTextPassword);
+        buttonNoLogIn=findViewById(R.id.buttonNoLogIn);
+        buttonLogIn=findViewById(R.id.buttonLogIn);
 
-        ButtonNoSignIn.setOnClickListener(new View.OnClickListener() {
+        buttonNoLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -42,21 +42,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        ButtonSignIn.setOnClickListener(new View.OnClickListener() {
+        buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                /*
-                SqlDatabaseController.CheckLogin checkLogin = new SqlDatabaseController().new CheckLogin(LoginActivity.this);
-                checkLogin.execute("usr","pwd");
-                */
-                //PROMIJENI U LOGIN
-                if (AutoCompleteTextViewUsername.getText().toString().equals("Admin") && EditTextPassword.getText().toString().equals("1234")){
+                if (autoCompleteTextViewUsername.getText().toString().equals("Admin") && editTextPassword.getText().toString().equals("1234")){
                     Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                     startActivity(intent);
                     //Toast.makeText(LoginActivity.this, "Usli ste u Admin Activity", Toast.LENGTH_SHORT).show();
                 }
-                else if (AutoCompleteTextViewUsername.getText().toString().equals("Moderator") && EditTextPassword.getText().toString().equals("1234")){
+                else if (autoCompleteTextViewUsername.getText().toString().equals("Moderator") && editTextPassword.getText().toString().equals("1234")){
                     Intent intent = new Intent(LoginActivity.this, ModeratorActivity.class);
                     startActivity(intent);
                     //Toast.makeText(LoginActivity.this, "Usli ste u Moderator Activity", Toast.LENGTH_SHORT).show();
