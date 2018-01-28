@@ -26,77 +26,15 @@ public class SqlDatabaseController {
     Connection con;
 
     // Declaring Server ip, username, database name and password
-    String db = "jdbc:jtds:sqlserver://10.0.2.2:1433/EZOrder";
-    String un = "test";
-    String pass = "test";
+    String db = "jdbc:jtds:sqlserver://10.0.2.2:1433/EZOrder";//your IP and DB name
+    //10.0.2.2:1433 ->localhost (1433 is standard port for MsSQL)
+    String un = "test";//your username
+    String pass = "test";//your password
 
     String z = "";
     Boolean isSuccess = false;
 
     Order order;
-
-    public class CheckLogin extends AsyncTask<String,String,String>
-    {
-        Context someContext;
-        String z = "";
-        Boolean isSuccess = false;
-
-        public CheckLogin(Context SomeContext) {
-            this.someContext = SomeContext;
-        }
-
-        @Override
-        protected void onPostExecute(String r)
-        {
-            if(isSuccess)
-            {
-                Toast.makeText(this.someContext , "Login Successfull" , Toast.LENGTH_LONG).show();
-                //finish();
-            }
-        }
-        @Override
-        protected String doInBackground(String... args)
-        {
-            return readDatabase();
-        }
-
-        public String readDatabase() {
-            try
-            {
-                Class.forName("net.sourceforge.jtds.jdbc.Driver");
-                con = DriverManager.getConnection(db, un, pass);        // Connect to database
-                if (con == null)
-                {
-                    z = "Check Your Internet Access!";
-                }
-                else
-                {
-                    //Toast.makeText(MainActivity.this , "Conn no es null" , Toast.LENGTH_LONG).show();
-                    // Change below query according to your own database.
-                    String query = "select * from Producttbl";
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(query);
-                    if(rs.next())
-                    {
-                        z = "Login successful";
-                        isSuccess=true;
-                        con.close();
-                    }
-                    else
-                    {
-                        z = "Invalid Credentials!";
-                        isSuccess = false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                isSuccess = false;
-                z = ex.getMessage();
-            }
-            return z;
-        }
-    }
 
     public class GetFoodCategory extends AsyncTask<String,Void,Boolean>
     {

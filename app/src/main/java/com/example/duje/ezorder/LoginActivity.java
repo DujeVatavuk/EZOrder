@@ -49,15 +49,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (autoCompleteTextViewUsername.getText().toString().equals("Admin") && editTextPassword.getText().toString().equals("1234")){
                     Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                     startActivity(intent);
-                    //Toast.makeText(LoginActivity.this, "Usli ste u Admin Activity", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Admin Activity", Toast.LENGTH_SHORT).show();
                 }
                 else if (autoCompleteTextViewUsername.getText().toString().equals("Moderator") && editTextPassword.getText().toString().equals("1234")){
                     Intent intent = new Intent(LoginActivity.this, ModeratorActivity.class);
                     startActivity(intent);
-                    //Toast.makeText(LoginActivity.this, "Usli ste u Moderator Activity", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Moderator Activity", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(LoginActivity.this, "Wrong krivi username or password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
